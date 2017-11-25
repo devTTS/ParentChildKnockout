@@ -15,6 +15,16 @@ namespace PCK.Model
 
         protected override void OnModelCreating( ModelBuilder builder)
         {
+
+            builder.Entity<SalesOrder>(entity =>
+            {
+                entity.HasKey(e => e.SalesOrderId);
+                
+                entity.Property(e => e.PONumber).HasMaxLength(10);
+                entity.Property(e => e.CustomerName).HasMaxLength(50);
+
+            });
+
             //builder.ApplyConfiguration(new SalesOrderConfiguration());
         }
     }

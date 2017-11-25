@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PCK.Model;
 
-namespace PCK.Data
+namespace PCK.Model
 {
     public class SalesOrderConfiguration : IEntityTypeConfiguration<SalesOrder>
     {

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PCK.Model;
+using PCK.Web.ViewModels;
 
 namespace PCK.Web.Controllers
 {
@@ -18,13 +19,11 @@ namespace PCK.Web.Controllers
             _context = context;
         }
 
-        // GET: Sales
         public async Task<IActionResult> Index()
         {
             return View(await _context.SalesOrder.ToListAsync());
         }
 
-        // GET: Sales/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -38,31 +37,36 @@ namespace PCK.Web.Controllers
             {
                 return NotFound();
             }
+            SalesOrderViewModel viewModel = new SalesOrderViewModel
+            {
+                PONumber = salesOrder.PONumber,
+                CustomerName = salesOrder.CustomerName,
+                SalesOrderId = salesOrder.SalesOrderId
+            };
 
-            return View(salesOrder);
+            return View(viewModel);
         }
 
-        // GET: Sales/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Sales/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SalesOrderId,CustomerName,PONumber")] SalesOrder salesOrder)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(salesOrder);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(salesOrder);
-        }
+        //// POST: Sales/Create
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("SalesOrderId,CustomerName,PONumber")] SalesOrder salesOrder)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(salesOrder);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(salesOrder);
+        //}
 
         // GET: Sales/Edit/5
         public async Task<IActionResult> Edit(int? id)

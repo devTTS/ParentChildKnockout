@@ -38,6 +38,7 @@ namespace PCK.Web
             services.AddDbContext<SalesContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
@@ -57,6 +58,15 @@ namespace PCK.Web
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                if (!serviceScope.ServiceProvider.GetService<SalesContext>().AllMigrationsApplied())
+                {
+                    serviceScope.ServiceProvider.GetService<SalesContext>().Database.Migrate();
+                    serviceScope.ServiceProvider.GetService<SalesContext>().EnsureSeeded();
+                }
+            }
+
 
             app.UseStaticFiles();
 
