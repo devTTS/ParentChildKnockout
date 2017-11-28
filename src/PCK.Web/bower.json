@@ -1,0 +1,22 @@
+{
+  "name": "asp.net",
+  "private": true,
+  "dependencies": {
+    "jquery": "3.2.1",
+    "jquery-validation": "1.14.0",
+    "jquery-validation-unobtrusive": "3.2.6",
+    "datatables-responsive": "2.2.0",
+    "datatables.net-plugins": "datatables-plugins#1.10.16",
+    "DataTables": "RELEASE_1_9_4",
+    "jQuery": "3.2.1",
+    "moment": "2.19.1",
+    "font-awesome": "fontawesome#v4.7.0",
+    "modernizer": "v2010.07.06dev",
+    "pdfmake": "0.1.33",
+    "bootstrap": "v3.3.7",
+    "knockout": "v3.4.2"
+  },
+  "resolutions": {
+    "jquery": ">=1.8"
+  }
+}

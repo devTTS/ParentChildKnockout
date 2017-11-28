@@ -1,30 +1,39 @@
 ﻿@model PCK.Web.ViewModels.SalesOrderViewModel
+@using Newtonsoft.Json;
+
 
 @{
-    ViewData["Title"] = "Details";
+    ViewBag.Title = "Sales Order Details";
 }
 
-<h2>Details</h2>
+@{ string data = JsonConvert.SerializeObject(Model);}
 
+@section scripts{
+
+    <script src="~/lib/knockout/dist/knockout.js"></script>
+    <script src="~/lib/knockout-mapping/build/output/knockout.mapping-latest.js"></script>
+    <script src="~/js/salesorderviewmodel.js"></script>
+    <script type="text/javascript" language="javascript">
+
+
+        var salesOrderViewModel = new SalesOrderViewModel(@Html.Raw(data));
+        debugger;
+        ko.applyBindings(salesOrderViewModel);
+    </script>
+}
+<h2>Details</h2>
+<p data-bind="text: MessageToClient"></p>
+<div>@Model.MessageToClient</div>
 <div>
-    <h4>SalesOrder</h4>
+    <h4>Customer Name</h4>
+    <span data-bind="text: CustomerName"></span>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.CustomerName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.CustomerName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.PONumber)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.PONumber)
-        </dd>
-    </dl>
+    <div>
+        <label>P.O. Number</label>
+        <span data-bind="text: PONumber"></span>
+    </div>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.SalesOrderId">Edit</a> |
+    
     <a asp-action="Index">Back to List</a>
 </div>

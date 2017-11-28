@@ -25,4 +25,6 @@
     <ProjectReference Include="..\PCK.Model\PCK.Model.csproj" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties bower_1json__JSONSchema="http://json.schemastore.org/compilerconfig" /></VisualStudio></ProjectExtensions>
+
 </Project>
