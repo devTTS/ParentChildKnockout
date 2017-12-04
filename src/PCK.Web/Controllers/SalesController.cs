@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using PCK.Model;
 using PCK.Web.ViewModels;
 
@@ -19,6 +20,29 @@ namespace PCK.Web.Controllers
             _context = context;
         }
 
+        [HttpPost]
+        public JsonResult Save([FromBody]SalesOrderViewModel salesOrderViewModel)
+        {
+            //significant variance from how MVC4 processed ajax requests
+            //https://stackoverflow.com/questions/47540406/model-binding-in-mvc-core-from-knockoutjs
+            if (ModelState.IsValid)
+            {
+                var salesOrder = new SalesOrder();
+                salesOrder.CustomerName = salesOrderViewModel.CustomerName;
+                salesOrder.PONumber = salesOrderViewModel.PONumber;
+                _context.SalesOrder.Add(salesOrder);
+                _context.SaveChanges();
+
+                salesOrderViewModel.MessageToClient = string.Format("{0}'s order was saved.", salesOrder.CustomerName);
+
+
+                return Json(JsonConvert.SerializeObject(salesOrderViewModel));
+            }
+            else
+            {
+                return Json(JsonConvert.SerializeObject(ModelState));
+            }
+        }
         public async Task<IActionResult> Index()
         {
             return View(await _context.SalesOrder.ToListAsync());
@@ -50,7 +74,9 @@ namespace PCK.Web.Controllers
 
         public IActionResult Create()
         {
-            return View();
+
+            SalesOrderViewModel viewModel = new SalesOrderViewModel();
+            return View(viewModel);
         }
 
         //// POST: Sales/Create

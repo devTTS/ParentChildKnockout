@@ -1,38 +1,42 @@
-﻿@model PCK.Model.SalesOrder
+﻿@model PCK.Web.ViewModels.SalesOrderViewModel
+@using Newtonsoft.Json;
+
 
 @{
-    ViewData["Title"] = "Create";
+    ViewBag.Title = "Sales Order Details";
 }
 
-<h2>Create</h2>
+@{ string data = JsonConvert.SerializeObject(Model);}
 
-<h4>SalesOrder</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CustomerName" class="control-label"></label>
-                <input asp-for="CustomerName" class="form-control" />
-                <span asp-validation-for="CustomerName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PONumber" class="control-label"></label>
-                <input asp-for="PONumber" class="form-control" />
-                <span asp-validation-for="PONumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </form>
-    </div>
-</div>
+@section scripts{
+
+    <script src="~/lib/knockout/dist/knockout.js"></script>
+    <script src="~/lib/knockout-mapping/build/output/knockout.mapping-latest.js"></script>
+    <script src="~/js/salesorderviewmodel.js"></script>
+    <script type="text/javascript" language="javascript">
+
+        var salesOrderViewModel = new SalesOrderViewModel(@Html.Raw(data));
+
+        ko.applyBindings(salesOrderViewModel);
+    </script>
+}
+<h2>Create Sales Order</h2>
+<p data-bind="text: MessageToClient"></p>
 
 <div>
+    <form name="formName">
+        <div>
+            <h4>Customer Name</h4>
+            <input name="CustomerName" id="CustomerName" data-bind="value: CustomerName" />
+        </div>
+        <div>
+            <label>P.O. Number</label>
+            <input name="PONumber" id="PONumber" data-bind="value: PONumber" />
+        </div>
+    </form>
+</div>
+<p><button data-bind="click: save">Save</button></p>
+<div>
+
     <a asp-action="Index">Back to List</a>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
